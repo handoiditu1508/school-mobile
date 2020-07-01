@@ -1,0 +1,102 @@
+[MUSIC] So now that we've seen Intents, let's talk about how you use
+Intents to start activities. Now, if you remember
+back to the last lesson, I talked about how you can problematically
+start an activity using methods such as startActivity or, startActivityForResult. Now, when you use one of these methods, Android has to figure out which single
+activity it's going to start up. And there are two ways in
+which Android does this. The first way is that if you explicitly
+named the target activity when you created the intent then Android can just look
+that up and start that specific activity. The second way which is only used
+if you haven't explicitly set the target activity, is that Android can implicitly determine
+it based on the intent that was used and based on the properties of activities
+that you have installed on your device. So let's take a look at an application
+that explicitly starts another activity. And this application is called
+Hello World With Login. And it's comprised of two activities. There's one activity called LoginActivity. And another called HelloAndroid. Now when this application launches, LoginActivity is the first
+activity that's started. LoginActivity provides a textbox for
+typing a username and another one for entering a password. There is also a button and
+once the user enters their username and password, they'll hit the Login button. And then LoginActivity will check
+the entered pass, password and username. And if it accepts them, it will then
+start the HelloAndroid activity, which will then display
+the words HelloAndroid. Let's see that in action. So here's my device. I'll go to the home screen. And then I launch the HelloAndroid
+with Login application. This pops up a user interface screen,
+allowing me to enter a user name and a password. Now enter that information. And now that I'm done,
+I'll click the Login button. If LoginActivity accepts my user name and password, then another activity starts
+displaying the words, HelloAndroid. So let's look at the code to see
+exactly how this is implemented. I'll start by opening up
+a LoginActivity class. Here I'm showing a listener code
+that's attached to the Login button. And here, the code grabs the username and
+password that the user has just entered, and then passes them
+to a method called checkPassword. If checkPassword returns true,
+then the code will continue. First it creates an intent
+called hello intent, and as you can see the call to the intent
+constructor takes two parameters, a context and a class object for
+the activity to be started. In this case LoginActivity.this
+is used as the context. Now a context is an interface that's used
+to access global application information. And since activity is
+a sub class of context, it's fine to use LoginActivity.this for
+this parameter. The second parameter is the class object. In this case, for
+the HelloAndroidActivity. This parameter indicates the activity to
+be started by the call to start activity. The second way to start an activity
+is by implicit activation. In this situation you haven't told
+Android which activity to start so it has to figure it out on it's own. And what happens here is that Android
+tries to match the intent that was passed in to start activity,
+or start activity for result with the capabilities of
+activities that are on your device. And this process is
+called intent resolution. Intent resolution relies on
+two kinds of information. First, there's the intent that
+the calling activity created to describe the operation that
+it wants to be performed. And second,. Individual Android activities
+specify intent filters which describe the kinds of operations or
+intents that they can handle. And this information is usually placed
+in the AndroidManifest.XML file, or the applications to which
+the activities belong. At run time when the start activity
+run method is actually called, Android will try to match the intent with
+the intent filters that it knows about. However, it's only going to use part
+of the intent information when it does this matching. Specifically, it will
+look at the Action field. He will look at the Data; including
+both the URI and the mime type. And he will look at the Category. So let's take a look at how applications
+specify IntentFilters within their androidmanifest.xml files. So here's an XML snippet showing
+an activity tag and this activity tag includes within it an intent
+filter tag,that intent filter tag includes within it an action corresponding
+to the intent action that it can support. For example. If an activity can dial phone numbers,
+then it should include an intent filter with
+the standard action, intent.action_dial. Now that's the, the Java name for that. The actual value is, is really a string. So you'll see andriod.intent.action.dial. That's the value that will actually
+be written into the intent filter. If your activity handles
+a specific type of data, it can add that information to
+its intent filter as well, for example, an activity can specify
+the mime type of the data it handles. You can also specify the scheme, host and
+or port number of the data UIs it handles. It can further limit the format of
+the data URI by specifying it's path, pathPattern or pathPrefix. And there are quite a few possibilities
+here, so please see the documentation for more examples. Now, if an activity wants to
+publish that it can show maps for example, then it might include
+an intent filter, like this one, which tells Android that it can handle
+data URIs that have a geo scheme. Similarly, activities can specify
+categories for the intents they handle. And let's look at an example
+that puts all of this together. Now, we can guess or imagine based on those map location
+applications we saw before, that Google Maps can handle intents that
+have an action of intent.action_view. And that have a data field
+with the geo scheme. Now a while back I decided to take a look
+at the Android manifest.xml file for the Google maps application. And what I saw looked something like this. There was an activity
+with an intent filter. And that intent filter listed
+in action of intent action.view. And it had data, had a data scheme of geo. In fact, this is exactly what the map
+location applications passed into start activity So going back to Google maps,
+the activity also listed two categories. Category.browsable meaning
+that it can respond to browser links and cateogry.default. Now it turns out that in most
+cases activities that want to ac, accept implicit intents, must include
+category.defualt in their intent filters. Finally when more than one activity
+can accept a particular intent, Android will have to break
+the tie in some way. And one way to do that is just to
+ask the user which activity, he or she wants to handle the intent and
+you may have seen that. Another possibility is that
+activities can specify a priority. That Android will take into
+account when deciding between, two different activities that
+can handle a particular intent. Now those priority values should be
+between, minus 1000 and positive 1000. And higher values, mean higher priority. Now for those of you who are interested
+in knowing more about intent filters, I recommend you take a look
+at the adb dumpsys command. Here I've opened up a terminal window. And now I'll issue the command
+adb shell dumpsys package. Now this is going to spit out a ton of
+information from the package manager. So I'll just capture the output of
+this command in to a text file. Let's run the command. And now I'll open that
+file in a text editor. I'll use emacs and
+then we'll search for the string geo. And what you're seeing here is that
+the Google Maps application in fact has an intent filter for
+URI's with the geo scheme.

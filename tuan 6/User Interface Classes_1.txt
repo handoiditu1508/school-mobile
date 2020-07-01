@@ -1,0 +1,174 @@
+[MUSIC]. In this lesson we're going to talk about
+the many different kinds of classes, that Android gives you, to help you build, good
+looking and effective user interfaces. In particular,
+I'll start by introducing the View class. A basic building block, for just about everything that's
+visible on your device's screen. I'll also discuss the various events,
+that Views can receive. After that,
+I'll discuss a higher level compound view, called Grou, called View Groups. Which combine multiple views to create
+a particular look, or behavior. I'll also discuss some
+specific view groups, in particular adapter views, and layouts. And after that, I'll talk about menus and the action bar, which give users easy
+access, to frequently used functions. And last, I'll finish up with
+a discussion of dialogs. Those views that pop up in front
+of an application, to give and get information to and from the user. So let's talk about,
+user interfaces, or UIs, in general. First of all, a user interface is,
+essentially, the place and the means by which the user, and
+the application, exchange information. And in this lesson,
+when I talk about a UI, I'm specifically going to
+concentrate on the device screen. And the visual elements, that users
+can see and touch on that screen. But of course, modern user interfaces
+can be much more than just that. For instance, handheld devices typically
+have many sensors, so user interfaces increasingly leverage, many different
+kinds and qualities of input and output. Including audio, LED lights,
+radio waves, and more. Now getting back to Android,
+as I've said before, activities usually display visual
+user interface to the user. So Android provides a rich
+set of classes From which, developers can create
+those user interfaces. Let's talk about some of those classes,
+starting with the view classes. The view class is a key building block for
+UI components. Views occupy a rectangular
+space on the screen. And they're responsible for
+drawing themselves and for handling any events that
+are directly to them. Andriod comes with a number of
+predefined or build in views. Let me talk about a couple of them. Specifically I'll talk about buttons,
+toggle buttons. Checkboxes, the RatingBar,
+and the AutoCompleteTextView. So we've seen lots of buttons
+already in this class. A button, is just a view. It's usually a somewhat small view, that users can click on to start or
+to perform some action. Let's see one in the ui
+button application. As you can see, it's called UIButton, and
+it has a single button at the bottom of the screen, and
+that button is labeled Press Me. And if you give in to the temptation and
+press the button,. You'll see that the label changes. And now it says, got pressed followed by the number of
+times that button has been pressed so far. So, I'll press it a few more times,
+and you can see that he count continues to rise by one,
+each time that I press the button. And by now you can probably guess what
+the code for this activity looks like. In fact, you've seen lots of
+examples in previous lessons that do things just like this. The code for this activity has
+created a button object and it's attached a listener to that button. And every time I press this button,
+Android promises to, and in fact does,
+call the button listeners on click method. Let's look at some more built in views. And then I'll stop and
+give you some time to look at the code for each of the sample applications. The next view is called the ToggleButton. A toggle button its a kind,
+is another kind of button. However, also has the extra
+property that when you press it, it stays pressed, and
+it stays pressed until you press it again. So a toggle button is always in one of
+two states, it's either checked, or it's not checked. Toggle buttons also typically display
+some kind of indicator to let the user know what the,
+what state the button is currently in. And you've probably seen toggle buttons
+like this in many applications, such as music players. You hit the button and
+the music starts playing. And it continues playing until
+you hit the button again. Let's see a toggle button in action. The application starts up and shows a single unchecked
+toggle button labeled Start. Under the label, there's a small area. It's not lit up right now, but it will light up when the toggle
+button is eventually checked. So the idea here is that something's
+going to start happening when the user presses this toggle button. So I'll hit the start button now. And what happens? In this case the background color
+changes from black to white. And the toggle button now says stop. You can see there's also a small
+blue highlight underneath the label. Which indicates that the toggle
+button is now checked. The next view I'll talk
+about is the Checkbox. And you've probably seen things
+like this in many applications. Things like order forms like where for
+instance, you check all the toppings you want
+on your pizza or something like that. Now a checkbox is actually
+just another kind of two state button just a toggle button. The main difference is just
+what it looks like to the user. Checkboxes usually display some kind of area that's empty when
+the checkbox is not marked. It shows a check mark or an x symbol or something like that,
+when the checkbox is in the checked state. Let's see a checkbox in action. The application starts up and going from
+top to bottom displays some text and then an uncheck text box followed
+by the words I'm not checked. And then underneath all that there's
+a button that says hide check box. Now I'll click on the checkbox. And as you can see, it displays check
+mark to show that it's now been selected. You'll also notice that the text following
+the check box has changed to say, I'm checked. And as you can imagine in the source code,
+I've attached a listener to the checkbox. Which changes that text to reflect
+the checkbox's current state. Now I'll click on
+the hide checkbox button. And when I do that,
+the listener attached to the button changes the visibility of
+the checkbox so that now it's invisible. When I click on the button again. The checkbox becomes visible again,
+and again, when we take a break, please walk through the code for all of
+these sample application to get an idea, or see the different ways that
+views can be manipulated. The next view is the RatingBar. This view displays a row of
+stars like you might use in an application that rates restaurants or
+songs or things like that. You know it's great I give
+it five stars out of five or that's awful I give it
+one star out of five. The rating bar allows users to
+highlight some number of stars. By clicking or
+dragging on the rating bar view. Let's see an application
+that uses a rating bar. Now I'll start
+the UIRatingBar application. I've set up the rating bar to
+show a total of four stars, all unselected at the beginning. Now I'll select the first star and as you can see it highlights,
+now the second star, and now the third. And now I'll drag back
+across the rating bar, which essentially deselects all the stars. And the last view I'll talk about
+is the AutoCompleteTextView. This view is first of all a text view. That is, it's a view that displays text. And we've seen lots of those already. This text view is also editable, which means that users can type text
+that will go into this text view. And in addition, this view will
+show a list of text entries. And we'll filter that list as you type so that it only shows those entries
+that match what you're typing. And once you have narrowed down the list,
+you can touch a single entry, which will then be
+placed in the text view. Let's see that in an application. This application shows the words country. And then next to that there's
+an autocomplete text view and I've associated a long list of countries
+with this autocomplete text view. And now I want to have the name
+Chile appear in this box. Now I could have put the list in
+some kind of scrolling view, but then I would've had to, you know, keep scrolling through the long
+list to find the country that I wanted. With an autocomplete text view however,
+I don't have to do any scrolling, I can just tart,
+start typing in some letters. For instance, here I'll type the letter C. And now the letter h and
+as you can see there's a drop down list that has appeared, showing only those
+countries that start with the letters CH. So in this case there's Chad, Chile,
+China, and the Christmas Islands. So I'll continue by typing the letter i. And now the list shrunk to just Chile and
+China. And I'll go ahead and type one more letter L, and
+now there's just the single country Chile. And that's left in the drop-down list. So I'll just select it now. And as you can see, the word Chile. Has been inserted into the auto
+complete text view and a little message window pops up
+confirming that I've chosen Chile. So, those are a few of the views
+that Android provides. And the example applications
+showed some of the operations that are commonly applied [INAUDIBLE] Views,
+for instance, the UI check box application
+changed the visibility of the check box. The UI toggle button and UI check box applications changed
+the check state of the view. And also, all of the examples
+used listeners in various ways to take some kind of action. Once the user had manipulated the view. Your own applications of course, you'll put your own application
+specific code in those listeners. There are also many other view
+operations that we didn't show. For instance,
+you can set a view's opa, opacity or transparency, you can set its background. Its orientation on a display and
+other things. And you can also have your views interact
+with the keyboard by requesting or accepting the input focus, which tells
+Android that keyboard clicks, for example, should be sent
+to a particular view. Views handle events. And these events can come from various
+sources including the user when he or she touches a view on the display or uses physical input devices such as
+a physical keyboard, trackball, or D-pad. Android itself can also
+be a source of events. For instance,
+views receive various method calls. When Android needs to re-position,
+or redraw the views. Let's talk a bt more about view events. As we've seen many times already,
+a very common way to handle events is by attaching the, is by
+attaching listeners to individual views. Android defines a number of different
+kinds of listener interfaces. And the methods defined by
+those interfaces get called when specific events occur on a view. For example; the view class defines
+an" on click" listener interface, that has an "on click" method. This method is called whenever
+a view has been clicked. The view class also defines
+the on long click listener. And that has an on long click method and
+this method is called whenever a view is pressed and held pressed for
+a specific period of time. The view class also defines
+an on focus change listener. That has an on focus change method, and this method is called when a view
+has received or lost focus. It also defines an on key listener
+interface that has an on key method which is called when a view is about
+to receive a hardware key press. And there are many other events
+that you can listen for as well. So let's step back for a second. Right now,
+we're talking about individual views. But applications typically involve
+many views all being displayed at the same time. As we saw when we used the UI
+hierarchy viewer in our lesson on the Android development environment. An application's views
+are typically organized as a tree. Now, there's the outer most view and
+it holds some number of child views. And each of those child views can have
+its own children and so on and so on. When Android goes to draw all
+of these views on the screen. It does so, while walking through
+this view tree, multiple times. Each time,
+doing something a bit different. So, conceptually, on the first pass,
+it measures all of the views. On the second pass,
+it positions all the views. And on the third pass,
+it draws all the views. Now, much of the time, you don't worry or
+care about these steps. But, if you create your own
+custom view subclasses, then you may also want to override these
+various view methods to ensure that your custom view is drawn
+the way that you want it to be. For instance,
+when it's doing its measuring pass, Android will call onMeasure on your view. And your view must calculate and
+then set it's own dimensions. When it's doing it's layout pass, Android
+will call your views onLayout method. And this method should position itself and
+call layout on all of its children views. During the third pass Android will
+call your views onDraw method and this method then draws the view. Some of the methods you might want
+to override in your custom views include onFocusChanged. To handle when your views
+focus state changes. On key up, or on key down,
+to handle hardware key events. Or on window visibility
+changed to handle a change in the visibility status of
+the window containing your view.

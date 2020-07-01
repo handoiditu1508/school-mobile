@@ -1,0 +1,131 @@
+[MUSIC] In this lesson I'll talk about how
+Android applications can define and use permissions to control access to
+important data, resources and operations. First, I'll talk about Android's
+permissions architecture. After that,
+I'll explain how you can define and use application level permissions. And then, I'll finish up by talking about
+component specific permissions, and permissions related APIs. Android uses permissions to protect
+resources, data and operations. And applications can also define and
+enforce their own permissions to limit access to their resources and
+things like user information. For example, to restrict who can
+access an application's database. To cost sensitive APIs. For example, to restrict which components
+can invoke costly operations such as sending SMS or MMS messages. And the system resources, for example,
+to limit which components can use the device's camera to take pictures or
+record videos. So, in Androids,
+permissions are represented as strings. And applications include these permission
+strings in the AndroidManifest.xml file. And they can do this to declare the
+permissions that they use themselves and to declare the permissions that
+they require of other components, that want to use them. Let's look at each of these uses
+of permissions one at a time. So first, when an application needs to
+use a permission, it specifies that permission by putting a uses-permission
+tag in its androidmanifest.xml file. And when that application
+is installed on a device, the user will have to
+accept that permission. Otherwise errors or
+access failures will occur. Now here I'm showing a snip it of
+the androidmanifest.xml file for a hypothetical application. Now as you can see, this application needs
+permission to access the device's camera, permission to open a network socket to
+access the internet, and permission to access precise location information,
+coming for example from a GPS provider. Now, take a look at this documentation for
+a list of Andriod's built in permissions. Now you probably remember the map
+location from contacts application from earlier lessons. That application allows the user to select
+a contact from the contacts application, and then to display a map centered
+on that contact's postal address. So here's the application in action. Now I'll launch the map location
+from contacts application. Now I see a button that will
+allow me to select a contact. When I click on that button, the contacts
+application shows me my contacts and allows me to select one of them. Once I do that, that contacts postal
+address and other information is passed to Google Maps which then displays
+a map centered on the postal address. But as I said a few times now,
+my contact list is private information. Android doesn't allow just any application
+on my device to have access to that list of contacts. So, how did map location from
+contacts get access to it? That's right. The application must have declared that
+it uses the appropriate permission. And where should we look to confirm that? Again, that's right, we should look
+in the androidmanifest.xml file. Let's do that now. So here I've opened up the map location
+from contacts application in my IVE. Now I'll open up
+the androidmanifest.xml file. And we'll take a look inside. As you can see, there's a uses
+permission tag that declares that this application uses the built
+in read_contacts permission. In addition to declaring
+the permissions they use, Android applications can also define and
+enforce their own permissions. Now suppose that you've written
+an application that performs some privileged or dangerous operation, you
+might not want just any application to, to be able to invoke yours. So, Android let's you define and enforce
+your own application specific permission. And that means that other applications
+must be granted your permission, or Android will not allow them
+to use your application. Let's look at this in more
+detail with a simple example. So here's a simple application
+called Permission Example Boom. Now we're going to pretend
+that it performs some, some kind of dangerous action. In real life that might be something like
+formatting your external memory card. Now let's take a look at
+this application in action. Now I'll launch the permission
+example Boom application. And, Boom goes the dynamite. Now, since this operation,
+is clearly dangerous. We don't want just anyone to be
+able to start this application. So, we're going to define and enforce
+our own application specific permission. Now let's open up the androidmanifest.xml
+file to see how that's done. Here's the permission
+example Boom application. Now I'll open up the androidmanifest.xml
+file, and we'll take a look inside. Here you can see a permissions tag
+that defines a new permission. The permissions name is course.examples.permissionexample.boom_p-
+erm. In this example the permission tag
+includes two other attributes, a label and a description, which can be shown to the user when
+they are installing the application. The values for
+these strings are in the strings.xml file, now if we scroll down a bit you can see
+that this application also includes this permission as an attribute
+of the application tag. And because of this, Android will make
+sure that components that try to start this application have already been
+granted the boom_perm, permission. Now since the permission example boom application now requires
+the boom_permission, any other application wants to use it will first
+have to acquire that permission. So let's see what happens if
+an application without the proper permissions tries to start
+PermissionExampleBoom. So here I'm showing my device and I've installed a second application on the
+device called PermissionExapleBoomUser. And when I launch this application, it presents a single
+button labelled Detonate. And if I press this button the Boom User
+application will start up the Boom application, which as I just showed,
+requires the boom_perm permission. The Boom User application, however,
+does not have that permission. So Android should prevent it from
+starting up the Boom Application. Now, before I press the Detonate button,
+I'll also point out that I've opened the IDE and that it's showing
+log output from the running device. Okay, so
+now I'll press the detonate button and as expected something bad
+has happened the device is showing an error dialog telling the user
+that the Boom application has stopped. And if we also go and
+look at the log output. We can get more information as
+to the cause of this problem. And, as you can see in the log,
+Android has thrown a security exception, saying that Boom User
+requires the boom_permission. So, let's fix that problem. Now, if Boom User wants to
+use the Boom application. Then it has to first declare that
+it uses the boom_permission. To do that, it will put a uses permission
+tag in the androidmanifest.xml file. Let's see that in the code. So here's the Boom User application code. And now open up its
+andriodManifest.xml file, and here you can see the uses permission tag,
+with a name attribute whose value is the same as the permission that's
+defined by permission example boom. Okay, so now that we've added
+the uses permission tag. I've reinstalled the permission
+boom user application on my device. So let me go to the home screen and
+launch it. Now there's the Detonate button again and
+so now Ill press it and
+Boom goes the dynamite as expected. So, so far, all the permissions
+I've shown you have implied, have applied the entire application. Android also allows you to set
+permissions for individual components. And these settings will take precedence
+over any application level permissions. Now let's take a look at some
+of these component permissions. Activity permissions restrict
+which components can start the associated activity. These permissions are checked
+within the execution of methods, such as start activity, and
+start activity for result. Which, as you you know, are called one
+activity tries to start another one. And if the required permission is missing, then Android will throw
+a security exception. In fact, that's exactly what happened in
+the permissions Boom User example that we just went over a few seconds ago. Service permissions restrict
+which components can start or bind to an associated service. Now, we haven't talked
+about services much yet. So, I'll just mention that permissions,
+that these permissions are checked when requests are made to start,
+stop or connect to services. Using methods such as
+Context.startService(), Context.stopService(), or
+Context.bindService(). Just as with activities, Androids will throw a security exception
+if required permissions are missing. Broadcast receiver permission restrict
+which components can send and receive broadcasts. Now, again, we haven't talked about
+broadcast receivers very much yet. So, at this point, I'll just say that
+these permissions are checked in a variety of different ways,
+at a variety of different times. And we'll talk more about
+this in later lessons when we discuss broadcast
+receivers in more detail. Content provider permissions,
+restrict which components can read and write the data contained
+in a content provider. And again, we'll talk more about
+this in later lessons when we discuss content providers in more detail. So, that's all for
+this lesson on permissions. Please join me next time,
+when we'll discuss fragments. Thanks.

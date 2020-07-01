@@ -1,0 +1,169 @@
+[MUSIC] There are two general ways that
+fragments get added to activities. First, they can be statically
+added to the activity. For example, by putting them
+into the activity's layout file, which is then used in
+a call to setContentView. Alternatively, you can add fragments
+problematically using the FragmentManager. However they get added though, once they're added,
+Android will make a call to onCreateView. And within onCreateView,
+the fragment can use its own XML layout, similar to what activities do
+when they call setContentView, or they can programmatically
+build their user interfaces. And again, however it's done,
+once the user interface view is built, onCreateView must return the view that's
+at the root of its user interface layout. And that view will eventually be
+given to the hosting activity and added to the hosting
+activity's user interface. So, let's look back at
+the FragmentStaticLayout application and see how it defines its layout. Here's the application again. And as you remember, there's a panel
+on the left showing the play titles and there's a panel on
+the right showing quotes. And each of these panels is
+implemented by a different fragment, one is called TitleFragment and
+the other is called QuoteFragment. And this application's main activity
+is called QuoteViewerActivity. Let's open up the QuoteViewerActivity
+file and see how it handles or creates its layout. Now first,
+you see that in the onCreate method, there's a call to setContentView with
+the parameter value R.layout.main. So let's look in the res/layout
+directory for the file called main.xml. And here it is and let me open it up. As you can see, the entire layout
+is comprised of something called a LinearLayout and
+that LinearLayout contains two fragments. And inside those Fragment tags,
+there's an attribute called class. And the value of this
+attribute is the name of the class that implements that fragment. So in this case, one fragment is
+implemented by the TitleFragment class and the other is implemented by
+the QuotesFragment class. Anyway, that's enough for now. We'll talk more about layouts
+when we get to user interfaces. In any event, when this XML file is read, Android will understand that it needs
+to create these two fragments and that it needs to install them
+in the QuoteViewer activity. And this will start the chain of lifecycle
+calls that we talked about earlier. And as I said, one of those calls
+will be a call to onCreate view, in which the fragment is responsible for
+creating its user interface layout. Let's take a look at one of those layouts, the one in QuoteFragment,
+to see how it creates its user interface. Now here's the QuoteFragment class and
+down here is its onCreateView method. This method calls the inflate
+method of the LayoutInflater class, passing in a layout file as a parameter,
+and the effect of this is pretty similar
+to what happens in setContentView. Specifically, an XML file is read in and converted into Java objects corresponding
+to some user interface views. You can also add fragments to an activity
+without hardcoding the fragments into the activity's layout file. And to do that, while the activity is
+running, you have to do four things. One, get a reference to
+the FragmentManager. Two, begin a FragmentTransaction. Three, add a Fragment to the activity. And four, commit the FragmentTransaction. Now to see this in action, let's take
+the FragmentStaticLayout application and change it a bit so that the fragments
+are added programmatically rather than being added as part,
+as part of the QuoteViewer's layout file. Now here we are back in the IDE. I've created a new application called
+FragmentProgrammaticLayout and it's supposed to look exactly
+like FragmentStaticLayout. The only difference is how the fragments
+get added to the main activity. Let's open up the QuoteViewerActivity and
+see how it handles its layout. Now here in onCreate, there's a call to setContentView with
+a parameter value R.layout.main. So let's look in the res/layout
+directory for that main.xml file. Now here it is. Let me open it up. Now as you can see, the entire layout is
+again a LinearLayout with two subviews. But instead of it being,
+the subviews being fragments, this time, the subviews are frame layouts. The frame layout is to essentially reserve
+some space in the user interface and we'll fill the space in later when we
+add the fragments to this activity. Now, let's go back to the onCreate
+method of QuoteViewerActivity. Now we'll walk through the steps of
+adding the fragments into the user inter, into the activity. And just like I said earlier,
+there are four steps. First, we get a reference
+to the FragmentManager. Then we call the beginTransaction
+method on the FragmentManager. And that returns a FragmentTransaction. Next, we call the add method of the
+FragmentTransaction, passing in an ID for the frame layout and passing in
+the fragment that that view will hold. And we'll do that for both the
+TitleFragment and for the QuoteFragment. And finally, we'll call the commit
+method on the FragmentTransaction. Now, let's run the code and make sure
+that we haven't goofed anything up. And here's the FragmentProgrammaticLayout
+application running on an emulated tablet. And it seems to operate as promised. So, now we know how to add fragments
+to an activity programmatically. But in our example, it didn't really make that much
+difference in the sense that even though we added the fragments programmatically,
+the layout itself was static. There are always exactly two panels and
+that never changes. Now, one of the nice things about being
+able to add fragments on the fly, however, is that it allows you
+to dynamically change the user interface while the program is running. And if you do this right, it allows you to make good use
+of your precious screen space. So, let's take a look at a simple example
+that gives you a little flavor of this dynamic user interfaces. I'll launch an application called
+FragmentDynamicLayout, which, again, is similar to the previous examples,
+but sometimes it will show a single fragment and
+sometimes it will show multiple fragments. So here the application,
+we've just started it up and it's showing a single fragment. It's showing the TitleFragment and
+nothing else. And in fact, you can see here that I've
+changed the title of Hamlet to make it a little longer and you see that it takes up much more
+of the screen space than before. And in addition, if I click on that title,
+you can see that the item is indeed taking up the whole,
+the entire screen horizontally. Now that I finished clicking
+on the title though, you can see the familiar
+quote from Hamlet. And at this point, the application
+is displaying two fragments. If I now hit the Back button, you see that we've gone back to
+having just a single fragment. So let's take a look at the source code. Now here I am back in the IDE. And I'll open up
+the FragmentDynamicLayout application. And we'll take a look at
+the QuoteViewerActivity file. Now first,
+here's the call to setContentView, passing in the main.xml file. And this is pretty similar
+to what we saw before. Next, we'll start the process of
+adding a fragment to this activity. This time, however,
+we'll only add the TitleFragment. In fact, we'll only ever add the quote fragment if the user
+indeed clicks on a title. Now, supposing the user
+does click on the title. The onList selection method
+will then be called. Now let's take a look at that method. First, we'll test to see if
+the quote fragment has already been added to the layout. And if it hasn't, then we'll add it now
+by starting another FragmentTransaction. So, two things are new here. First, we're going to add this
+transaction to the task back stack. And that way, when the user
+hits the Back button, we'll go back to the one fragment layout that we
+had before it was, before it was added. And we have to do this because, by default, fragment changes
+are not tracked by the back stack. The second new thing is that at the end,
+I've added a call to FragmentManager.executePendingTransacti-
+ons. And this forces the transaction
+to be executed immediately, rather than at some later time when
+the system finds it convenient to do so. And again, I have to do this because
+otherwise, Android might, it might take, you know, god knows how long before
+it actually updates the display. Now, if you remember back to our lesson
+on the Activity class, I talked about how activities can handle configuration
+changes manually using methods such as onRetainNonConfigurationInstance
+and getLastNonConfigurationInstance. And at that time, I mentioned that those
+methods were deprecated in favor of other methods in the Fragment class. So let's talk about those methods now. Now, if you're using a fragment and
+the device's configuration changes, then Android, by default, will kill
+the hosting activity and recreate it, just like we talked about before. However, if you call the setRetainInstance
+method on the fragment, passing in the value true as a parameter,
+then when configuration changes occur, Android will kill the activity, but not
+destroy the fragments that it's hosting. Instead, it will save
+that fragment state and it will detach the fragment
+from the activity. And in addition,
+it won't destroy that fragment and so, it won't recreate it later when
+the hosting activity is recreated. And as a result, the fragment will not
+receive calls to its onDestroy method nor to its onCreate method. Let's take a look at another example application that
+demonstrates this behavior. This application is called
+FragmentStaticConfigLayout and its functionality is the same
+as the previous examples. The difference here though, is that I've added some code to
+handle configuration changes. Now, when the device is in landscape mode, the layout is basically what we've seen so
+far. Both fragments use the large font of 32sp,
+or scale-independent pixels. The TitleFragment takes about
+a third of the horizontal space, while the QuoteFragment takes
+the remaining two-thirds of the space. And if a title is too long to fit on
+a single line in the TitleFragment, that text will simply wrap
+around to a second line. When the device is in portrait mode,
+however, the layout changes a bit. Both fragments use a smaller 24sp font and the TitleFragment takes up only
+a fourth of the horizontal space, while the QuoteFragment takes up
+the remaining three-quarters of the space. And if a title is too long to fit on
+a single line in the TitleFragment, then that title will still be
+limited to a single line and we'll just replace some of
+the text with ellipses. Let's see that application in action. I'll start the application with
+the device in landscape mode. I'll select one of
+the title to show a quote. And as I said, the TitleFragment and
+QuoteFragment will use larger fonts. They're dividing up the screen in a
+roughly one-fourth to three-fourths ratio. And in the TitleFragment, it's allowing the title of Hamlet
+to spill over onto a second line. Now, let's rotate the device. Now, one thing that you notice is that
+even though Android has killed and restarted the QuoteViewerActivity,
+the title that I previously checked is still checked, and that's because I made sure to call
+setRetainInstance true in both fragments. So, information, for example, information about which
+item was checked, has been retained. And we'll see how that's
+done in just a second. You'll also notice that now that we're in
+portrait mode, the layout has changed. In fact, the fonts are smaller now and
+instead of that Hamlet title spanning two lines, the end of the title has
+been replaced with ellipsis. So, let's go see how this
+look works in the code. Now here, I've opened
+the FragmentStaticConfigLayout application in the IDE. Next, I'll open up
+the TitleFragment.java file. And as you can see,
+this code is mostly the same as what we saw in the other example applications,
+but there are at least two differences. Let's look at those. The first difference is
+in the onCreate method. I've added a call to setRetainInstance,
+true. And again, this means that when
+configuration changes occur, Android will not kill this fragment. The second difference is in
+the onActivityCreated method. And right here at the end,
+I've added some code that checks to see whether m current index
+is not equal to minus 1. And if that's true, it means that the user
+has previously selected a title and so, this call to onActivityCreated
+is probably occurring because of a configuration change. So in this case, we want to make sure
+that that title remains checked. Now, now I made similar changes to
+the QuoteFragment class as well.

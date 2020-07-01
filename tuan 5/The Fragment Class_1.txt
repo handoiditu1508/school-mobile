@@ -1,0 +1,114 @@
+[MUSIC] Today, I'm going to talk
+about the fragment class. Fragments were added to Android in version
+3.0 to better support user interfaces for de, devices with large screens,
+such as tablets. Now, over the last few years, the popularity of tablets
+has grown incredibly. And as I'm sure you know, tablets have
+larger displays than phones typically do. So, because of these larger screens,
+some of the design heuristics that made sense for a smaller phone display,
+no longer work. In particular, we can comfortably do
+much more on a large tablet display, than we could do on a small phone display. Now, to put this in concrete terms, let's take a look at a simple
+application called QuoteViewer. QuoteViewer is an application
+comprised of two activities. The first activity shows the titles
+of several Shakespeare plays and allows the user to select
+one title at a time. And when the user selects that title, a
+second activity is started which displays one quote from that play,
+let's take a look. Now I'll launch the QuoteViewer
+application, the first activity starts up. And shows us the titles of three
+Shakespeare plays, Hamlet, King Lear, and Julius Ceasar. Let me click on Hamlet. This starts the second
+activity which shows me Horatio's quote as Hamlet is dying. Now cracks a noble heart. Good night sweet prince, and
+flights of angels sing thee to thy rest. Now I'll hit the Back button
+to return to the titles. And next, I'll click on King Lear. And again, we get a quote, this time,
+one from the blinded Earl of Gloucester who says, as flies to wanton boys, are we
+to the gods, they kill us for their sport. And once again, I hit the Back
+button to return to the titles. And this time I click on Julius Ceasar. And again, the second activity
+starts up and we see a quote. This one, where Brutus urges
+Cassius to go on the attack. He says, there is a tide in the affairs
+of men, which taken at the flood, leads on to fortune. Omitted, all the voyage of their life
+is bound in shallows and in miseries. Now this is a fine interface for a phone. In fact, it would be hard to do much
+else and still have a readable and easy to use interface. On a tablet, however,
+this same layout is pretty lame. Now here, let me show you. Here I'm showing an emulated tablet. I'll click on the Launcher icon. And now I'll start the QuoteViewer
+application we just saw, on the phone. And the first thing you notice
+is all that unused white space. The titles take up just a little space
+on the left side of the display, and the rest is pretty much wasted. Now let me click on Hamlet. And here you see that the quote stretches
+all the way across the ten inch tablet but uses little of the vertical space. Now I'll hit the Back button
+to go back to the titles. And I can do the same thing for
+the King Lear quote. And the same thing for
+the Julius Caesar quote. And besides not being, not using the available space too well,
+this layout imposes a slow back and forth navigation style where the user
+has to keep moving their hand from the title then down to the back button,
+then back to the title and so on. So, let's see a better layout that
+uses both or shows both the titles and the quotes at the same time. I'll click on the Launcher icon and then start up the fragment
+static layout application. And this initially brings up a user
+interface that looks exactly like what you saw with the QuoteViewer application. However, when I click on the title, Hamlet, you see that the user interface
+gets essentially divided into two parts. The titles stay where they
+were on the left, but the quote is now shown simultaneously
+on the right side of the screen. And now if I want to
+see a different quote, I simply select a new
+play title on the left. Here I'll select King Lear. And again, the quote pops up on the right. And the same thing when
+I select Julius Caesar. Now overall,
+this layout works much better on a tablet than QuoteViewer's layout does. In particular, it avoids wasted space, and it makes navigation a little bit
+easier because I don't have to keep moving my hands down to the bottom
+of the display to hit the Back button. And then up to the titles, and so on. The QuoteViewer application
+was made up of two activities. The fragment static layout
+application that we just saw, however, is made up of a single activity. That single activity,
+however, hosts two fragments. Fragments represent the portion
+of an activity's user interface. The fragment static layout application,
+for example, has two such interface portions. One for the titles goes on the left and
+one for the quotes that goes on the right. And each of these portions of the user
+interface is implemented as a fragment. Fragments are hosted by activities. One activity can host zero or
+more fragments. And one fragment can be used
+across zero or more activities. Now as I said,
+fragments are hosted by activities. So fragments have to be
+loaded into the activity and then displayed, removed, and so
+on as the activity changes its state. And as a result the lifecycle
+of a fragment is tied to and coordinated with the lifecycle of
+the activity that's hosting it. At the same time however, fragments have
+some of their own life cycle call backs. For now,
+let's talk about the fragment life cycle, assuming that the fragment is statically
+bound to its hosting activity. We'll talk about dynamically adding and removing fragments from a hosting
+activity a little bit later. So, a fragment can be in a running or
+resumed state. And when it's in this state, the fragment
+is visible in the running activity. A fragment can also be
+in a paused state and fragments will be paused when their
+hosting activity is visible but some other activity is in
+the foreground and has focus. A fragment can also be in a stopped state. In this state,
+the fragment is not visible. Let's talk now about the life
+cycle callback methods that a fragment can receive. And we'll talk about when those
+methods might be called relative to the life cycle states of the activity
+that hosts the fragment. When a fragment's hosting
+activity is being created, the fragment may receive several
+life cycle method calls. First, when a fragment is
+attached to its hosting activity, the fragment receives a call to onAttach. Next, the fragment receives
+a call to its onCreate method. And note here that I'm referring to
+the fragment.onCreate method, not the activity.onCreate method that we've
+talked so much about in previous lessons. And as with the actitity.onCreate method, you typically initialize the fragment
+in the fragment's onCreate method, one difference between the two
+method however, is that unlike in activity.onCreate you don't set up
+the user interface in fragment.onCreate. That actually happens in the next method. Now, after onCreate, Android calls
+the fragments onCreateView method. And this method sets up and returns a view
+containing the fragment's user interface. And this view is then given
+to the hosting activity so it can install that view in
+the activity's view hierarchy. And finally, after the hosting
+activity has been created and the fragment's user interface
+has been installed, then the fragment receives a call
+to it's onActivityCreated method. Now, while the fragment is
+attached to the hosting activity, It's life'cycle is dependent
+on it's hosts life cycle. For example, if the hosting activity
+is about to become visible, it will receive a call
+from its onStart method. The fragment therefore will also
+receive a call to its onStart method. When the hosting activity is about
+to become visible and ready for user interaction Android calls
+the fragments onResume method. And when the hosting activity is visible
+but another activity is about to come into the foreground, Android
+calls the fragment's onPause method. And when the hosting activity is no longer visible the fragment
+receives a call to onStop. Now, when he hosting activity is about
+to be destroyed any fragments that it's hosting also have to be shut down. And, this happens in several steps. First, when the fragments
+user interface view, the one that was previously created by the
+call to onCreateView, when that view has been detached from the activity, the
+fragment receives a call to onDestroyView. And here you can do things like clean
+up resources associated with the view. Next, when the fragment
+is no longer in use, it receives a call to
+it's onDestroy method. And here you can do things like
+release fragment resources. Next, when the fragment is no longer
+attached to its hosting activity, it will receive a call to onDetach. And here you might do things like
+null out references to the fragment's hosting activity.

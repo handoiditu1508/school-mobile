@@ -1,0 +1,145 @@
+[MUSIC] So, so far we've been talking
+mostly about individual views. But in reality, we often want to have some
+kind of compound view that puts together multiple individual views, in order to
+provide some complex functionality. A simple example that we'll talk
+about in a minute is a radio group. A radio group is essentially
+a set of related check boxes. For example, you might have
+an application that asks how old you are, and allows you to select from
+a set of age ranges, say under 20, 20 to 34, 35 to 49, and over 50. And to do this,
+you would have a bunch of text views, for all the different age ranges and then next
+to each text view, you'd put a check box. Now you'd also want to make sure that only
+one of those check boxes is ever selected, because the age ranges obviously
+are mutually exclusive. To support complex views like this,
+Android has a class called ViewGroup. ViewGroups are invisible groups
+that contain other views. And so you can use them to group, and
+organize multiple views and ViewGroups. ViewGroup is a base class for
+view containers and layouts. Which we'll discuss, you know,
+in more detail later on in this lesson. Just like with simple views,
+Android provides a number of predefined viewGroups,
+including some we'll talk about now. Such as RadioGroup, TimePicker,
+DatePicker, WebView, MapView, Gallery, and Spinner. Let's take a look at each
+of these one at a time. Let's start with the RadioGroup. As I just explained a RadioGroup
+is a ViewGroup containing a set of mutually exclusive check boxes or
+radio buttons. So only one of the radio buttons
+can be selected at any one time. Let's take a look at
+an example application. The application displays a text view and
+a radio group. The text view is displaying
+the text No Choice Made. Because right now none of
+the radio buttons are selected. So now I'll select Choice 1. And as you can see, the text changes
+to reflect the choice that I made. Now, I'll select Choice 2. And again, you can see that Choice
+1 was automatically unselected, and Choice 2 is now selected. And the same kind of thing
+happens when I select Choice 3. The next ViewGroup is TimePicker, and this ViewGroup allows the user
+to select a particular time. I'll now start up
+the UITimePicker application. And the application displays a text
+view showing the current time, and a button labeled, Change the time. So I'll click on the button and
+up pops the time picker ViewGroup. As you can see, the time picker is
+composed of many different views, but together, allow the user to
+independently set the hour, the minutes and whether or
+not the time is a.m, or p.m. There's also a button at the bottom
+to indicate that you're done. And once you click that button, the text view changes to show
+the time that you've just selected. Similar to the TimePicker,
+there's also a DatePicker ViewGroup. This ViewGroup allows the user
+to select a particular date. So now I'll start
+the UIDatePicker application. The application displays a text
+view showing the current date, and a button labeled, Change the date. So I'll click on the button and
+up pops the date picker ViewGroup. Again, a date picker is composed
+of many different views that together allow the user to independently
+set the month, the day, and the year. And there's also a button at the bottom
+to indicate when you're done. When you click on that button, the text view changes to show the date
+that you selected with the date picker. The next ViewGroup is a WebView. A WebView is a ViewGroup
+that displays webpages. Here's the UIWebView application. I'll start it up and it will download and display the familiar
+webpage at www.google.com. The next ViewGroup is a MapView and
+as the name suggests, a MapView is a ViewGroup that displays maps and
+allows the user to interact with them. Let's take a look at an example
+application that actually uses the MapFragment class, but uses it to display the underlying,
+an underlying MapView. So now I'll start up
+the UIGoogleMaps application. Once it's started up, this application displays a map,
+centered on some part of the Americas. The map also displays two red pins,
+one around Washington DC, United States and another in Mexico. Let me click on the upper most red pin. When I do that, pop-up appears,
+saying, I'm at the Washington Monument. If I then click on the other red pin,
+I see another pop-up. This time saying, [FOREIGN]. I'm in Mexico. Now the ViewGroups I just showed you each
+have a fairly clear purpose, and for the most part work with
+a fixed kind of input data. The next set of ViewGroups that I
+want to discuss are designed for situations where different developers may
+want to display different kinds of data. Consider, for instance, a list view, which can be used to show a list of phone
+numbers to dial, a list of songs to play, a list of images to select as your
+phone's wallpaper, and so forth. In order for ViewGroups like list view to
+work with all these different datatypes, Android provides a ViewGroup
+subclass called AdapterView. AdapterViews are ViewGroups whose
+child views and underlying data, are managed not by the ViewGroup itself,
+but by another class called an Adapter. And this Adapter class is responsible for
+managing the data and for creating and
+providing the views of that data to the AdapterView when
+the AdapterView asks for them. The AdapterView then is only responsible
+for displaying the data Views. So let's take a deeper look at the
+ListView class that I just talked about. ListView is an AdapterView that displays
+a scrollable list of selectable items. Those items are managed by
+an Adapter called the ListAdapter. The ListView can also optionally filter
+that list of items based on text input, just like what we saw with
+the autocomplete TextView. So let me start up
+the UIListView application. And as you can see the data underlying
+this ListView is a long list of colors. Red, orange, yellow, et cetera. And this ListView also brings
+up a virtual or soft keyboard. And I'll use it to type in
+the letter O and as I do this the ListView will filter out all of the
+colors that don't start with the letter O. In this case that leaves just orange and
+olive. I now type in the letter l,
+which leaves just the color olive. And if I click on that word olive, you'll
+see that the listener I've attached to the ListView will display
+my selection on the screen. Let's take a look at the source code for
+this application. Now here I've opened
+the application in the IDE. Now I'll open up the file,
+ListViewActivity. And let's go to the onCreate method. Here, we're calling setListAdapter to
+set the ListAdapter for this ListView. The actual adapter is an ArrayAdapter
+which implements the Adapter interface. The constructor for
+the ArrayAdapter takes a few parameters. The two that we'll focus on
+are the resource id which tells the ArrayAdapter how to create the view
+containing each piece of data. And the array of data objects
+itself is the second parameter. Let's look at those data objects. They're defined as a string array resource
+in the res/values/strings.xml file. And here you can see the string array. It's named colors. And it contains a bunch of colors,
+just like we saw. Red, orange, yellow, and so forth. Now let's go back to the ListView
+activity and get the name of the layout file that will be used to
+create views for each of these colors. That layout resource is in
+res/layout/list_item.xml. Let's open that file. Now as you can see, each piece of data
+is going to be put in a TextView with a certain amount of padding around it,
+and each drawn with a certain font size. Now back to the ListView activity. The next bit of source code gets the
+ListView associated with a list activity. And then calls setTextFilterEnabled(true). And this causes the keyboard to pop up, and the filtering to occur
+when the user types. And then finally we set
+an onItemClickListener which has an OnItemClick method. And that method will display the color that the user selects when they click
+on the, or by clicking on the ListView. The next adapter view
+is the Spinner class. A Spinner is an AdapterView that
+provides a scrollable list of items within a drop-down view. The user can click on this AdapterView
+which causes a drop-down list to appear, and then allows the user to select
+an item from that drop-down list. And the data for
+a spinner is managed by a SpinnerAdapter. Let's take a look at this class,
+in an example application. Now, here I'll start up
+the UISpinner application. And this brings up a text view that says,
+Pick a Color, Any Color. Currently, red is being used
+as the default selection. Now, suppose I want to
+select a different color. To do that, I'll click on
+the spinner where it now says red. And that causes the drop-down list
+with the list of colors to appear. So now I'll select yellow. The drop-down list disappears. The color yellow now appears
+as the selected color. And you can see the separate window
+showing the text, the color is yellow. And I can do it again. This time I'll pick the color violet. And using the same behavior,
+occurring again. Now I'm back in the IDE,
+looking at the UISpinner application. I'll now open the Spinner Activity file,
+and go to the onCreate method. First, there's a call to setContentView
+using the main.XML layout file. Let's open that file. Here we see that the user
+interface has several parts. In particular,
+it has a spinner element called Spinner. And going back to the Spinner activity,
+we now set up an Adapter for the spinner. We create this Adapter, the call to
+ArrayAdapter.createFromResource method. The parameters to this method
+include the list of colors and a layout for each view that will
+appear in the drop-down list. Let's take those resource files now. First I'll open up the strings.xml file,
+which holds the colors array. Next I'll open up
+the drop-down_item.xml file. That has the layout for the drop-down
+views, and here you see that each color will appear as a TextView with
+a certain padding and font size. Returning back to the SpinnerActivity,
+the next few lines set the Adapter and then set an OnItemSelectedListener. And that's called when
+the user selects a color. The next ViewGroup is the Gallery class. This ViewGroup displays a set of data
+with a horizontally scrolling list. Like a spinner, the data for a Gallery
+object is managed by a SpinnerAdapter. Here I'll start up
+the UIGallery application. As you can see, the data for
+this application is a set of images. And I can swipe on the display
+to move forward and backward through the list of images. You'll also notice that when
+I select a particular image, a listener is invoked to display
+the index of the selected image.

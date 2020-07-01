@@ -1,0 +1,92 @@
+[MUSIC] In our last lesson we talked
+about the activity class. And I showed you how one activity can
+programmatically start another activity by first creating an intent object and
+then by passing that intent to a method such as start
+activity or start activity for result. Today, we are going to take
+a deeper look at intents. We'll discuss how they are created and processed as they're used in
+starting other activities. And I'll begin by presenting
+the intent class itself. I'll talk about how they're created, what fields they have, and
+what information those fields contain. After that, I'll talk about the two
+ways in which Android decides which activities should be started when a method
+such as start activity is called. First, I'll talk about
+explicit activation in which intents specifically name
+the activity they want to start. And second, I'll start about implicit
+activation, where intents don't select a target activity but instead describe
+the operation they want to be performed. After which Android finds and then starts the activity that
+can perform that operation. The intent class is basically
+a data structure that serves at least two purposes in Android. One, it can specify an operation
+that you want to perform. And two, it can represent an event that
+has occurred in the system that you want to notify other components about. Today however we're going to
+focus on just the first of these. Using intents to specify operations
+that you want performed. And we'll leave the second of these,
+using intents for event notification, for a later lesson
+when we talk about broadcast receivers. Now you can think of intents as
+providing a kind of language for specifying operations that
+you want to have performed. In essence, intents give you
+an easy way to say things like, I want to select a contact. I want to take a photo. I want to dial a phone number. Or I want to display a map. So in practice, intents are usually constructed by one
+activity that wants some work to be done. And then Android uses that intent
+to start another activity that can perform the desired work. So let's talk now about the kinds
+of information that can be specified within an intent. For example, we'll talk about
+intent fields including action, data, category, MIME type,
+target component, extras, and flags. An intent's action field is
+a string that represents or names the operation to be performed. Some built in examples include, action_dial, which means I want
+someone to dial a phone number. Action_edit, I want someone to display
+some data for the user to edit. Action_sync, I would like
+to synchronize some data on my device with data on a server. An action_main, I want to start an activity as
+the initial activity of an application. You can set an intent's
+action in several ways. For example, you can pass an action string
+as a parameter to the intent constructor. Alternatively you can create an empty
+intent and then call the set action method on it, passing the action
+string again as a parameter. Intents also has a data field
+which represents data that is associated with the intent. Now that data is formatted as
+a uniform resource identifier, or URI. And one example of intent data is a
+geo-schemed URI which indicates map data. You might also remember that we
+saw something exactly like this in earlier lessons as part of those
+map location applications. Another example is a tell schemed URI, indicating a phone number
+that you want dialed. And note that the strings that represent
+the underlying data are first being passed through the Uri.parse method, which takes
+that string and then returns a URI object. You can set the intents
+data in a variety of ways. For instance, you can pass it
+directly to the intents constructor. Or you can create an empty intent and then
+use the setData method to set the data for that intent. The intent category represents
+additional information about the kinds of components that can handle or
+should handle this intent. Some examples include category_browsable. Which means that the activity can be
+invoked by a browser via a URI link. Another example is category_launcher. Which means that the target activity can
+be the initial activity of a task and is listed in the top level
+application launcher. Intents also have a type feel. Which specifies the MIME
+type of the intents data. Some examples of MIME types include,
+various image formats. Things like image/png for PNG images,
+and image/jpeg or JPG for JPEG images. There's, there are also various
+text formats, such as text/html for HTML text, or text/plain for
+arbitrary text data. And of course, if you don't specify a MIME type,
+Android will try to infer one for you. You can set an intents MIME type by
+using the setType method passing in a string that represents
+the desired mind type. You can also set both the data and the type together by calling
+the setDataAndType method. Intents also have a component field that
+identifies the intent's target activity. And you can set this field if you
+know that there is exactly one activity that should always
+receive this intent. You can set the intent's target component
+using one of the intent's constructors, by passing in a context object,
+and a class object which represents the activity that
+should perform the desired operation. And we'll see a code example
+of this in a few minutes. You can also create an empty intent and
+then use one of the setComponent(), setClass(), or setClassName()
+methods to set that target activity. Intents also have an extras field. Extras store additional information
+associated with the intent. Now extras are effectively
+a map of key-value pairs. So the target activity has
+to know both the name and the type of any extra data
+that it intends to use. For example, the intent class
+defines an extra called EXTRA_EMAIL. And this extra is used to pass a list
+of recipients when sending email. Now as you can see here, this code creates an intent,
+with the action Intent.ACTION_SEND. So we want to send some email. It also adds an extra to that intent. The extra is named EXTRA_EMAIL. And in this case it's values include me,
+aporter@cs.umd.edu, ceo@microsoft.com, potus@whitehouse.gov,
+and mozart@musician.org. Now there are several different methods
+for setting extras and the specific form of these methods will depend on
+the type of data you want to store. So, for example, there's one method for storing a string, one method for
+storing an array of floats, and so on. Another intent field is called flags. Flags represent information about
+how the intent should be handled. Some built in examples include
+flag_activity_no_history. Which means that when an activity
+is started based on this intent, it shouldn't be put in the history stack. Another flag is FLAG_DEBUG_LOG_RESOLUTION
+which tells Android to print out extra logging information when this intent is
+being processed, and this is a great tool to use if your intents are not starting
+up the activities that you want them to.

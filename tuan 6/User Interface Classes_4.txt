@@ -1,0 +1,118 @@
+[MUSIC]. In addition to what I've just shown you, menus can also support a number of more advanced features. For example, you can put related
+menu items into a group so you can process and
+manipulate them as a unit. You can also bind shortcut
+keys to specific menu items so you can access them more quickly. And you can bind intents to menu items. So for instance, you can start a particular activity, when
+the user clicks on a particular menu item. So I've mentioned
+the ActionBar a few times now. The ActionBar bar was added in
+android 3.0 and kind of mimics the Application Bar, that you often see
+in desktop apps, desktop applications. You know, that bar at the top
+of the application window that just says things like File,
+Edit, Help and those things. And the basic idea behind
+the ActionBar is that rather than hiding actions behind
+a traditional pop-up menu. You want to give the users quick access to
+the actions that they're likely to use. Let's look at some uses of the ActionBar. Now the first example I'll give goes
+back to our lesson on fragments. You remember those core
+viewer applications? Well in this application fragment
+dynamic layout with ActionBar. I've added some items to the ActionBar. Now as you'll see in a minute, these items
+are provided by three different classes. Some items come from the main activity. Some come from the fragment
+that displays the titles. And some come from the fragment
+that displays the quotes. Let's take a look. Here's my emulated tab. Now I'll start the application. And as before, when it starts up, there's a main activity which hosts
+a single fragment, the title fragment. Now if we look at the ActionBar
+at the top of the tablet, you see that there are two bits of
+text in the upper right corner. One says activity action. And the other says title action. That first piece of text was put
+there by the code viewer activity. The second was put there
+by the title fragment. And if I click on these bits of text, you'll see some text pop up,
+letting you know which object is actually carrying out the actions
+associated with that ActionBar r item. Now if I click on one of the titles. You remember that this causes
+the quote fragment to be dynamically added to the layout. Well, the quote fragment also adds some
+items to the ActionBar dynamically. In this case, there's a main action and a second action that gets
+put into the overflow area. So I'll click on the main action. And, again,
+you can see the text saying that this action was provided
+by the quote fragment. If I click on the overflow icon, this causes the second item provided
+by the quote fragment, to appear. And if I now click on that pop-up. You again see the associated text pop up. Now let's look at how this is
+implemented in the source code. Here I've opened
+the application in the IDE. I'll first open the quote
+viewer activity file, and there you'll see the on
+create options menu. And on options menu item selected methods. The same as we talked about before. Not much new here. Let's take a look at the menu layout and
+the activity underscore, menu.xml file. And this looks like what
+we've already seen. But one difference is
+the show as action attribute. It's value is, if room or with a text. And this means that Android should
+show this item in the ActionBar if there's room. But it should put it in the overflow area,
+otherwise. It also means that the item should be
+shown as text rather than by displaying, say an icon. Now, I'll open up the title fragment fla,
+file, and again, there are calls to the on create options menu and
+on options menu item selected methods. The one difference here is that
+because title fragment is a fragment, we also have to issue the command
+set has options true, which we do in the on create method. And last,
+I'll open up the quote fragment file. Again, not much new here. The quote fragment has this menu file in
+quote_menu.xml, and let's look at that. This menu has two items. One has its showAsAction attribute set to
+ifRoom|withText just like we saw before. The other one though has its
+showAsAction attribute set to never. And so it will always appear
+in the overflow area. And never in the ActionBar. Another use of the ActionBar,
+is to help provide a consistent way of switching between different
+views in an application. When using the ActionBar this way
+the screen is divided into two sections. A tab area and a content area. The ActionBar on tab class allows you
+to associate a fragment with each tab indicator in the tab area. Now, only one tab indicator can
+be selected at any one time. So when the user selects
+a particular tab indicator. Its fragment can be shown
+in the content area. If the user then selects a different tab, a different fragment can be
+shown in the content area. So here's a sample application
+called UITabLayout that uses the ActionBar.Tab class to
+switch between two instances. Of a fragment that uses the grid view
+layout that we discussed earlier. Here I'll start
+the UI Tab Layout application. The application displays two tab
+indicators, one labeled flowers, and one labeled animals. The flowers tab is currently selected. And in fact does exactly what we saw
+in the UI grid view application. Now I'll select the animals tab. As you can see the application is now
+displaying another grid view fragment, but this time it's showing images
+of dogs rather than flowers. Let's take a look at the source code for
+this application. Here's the application open in the IDE. I'll now open the tab layout activity
+file and go to the onCreate method. First, the code gets the ActionBar. Then it configures the ActionBar
+r to operate as a tab. Next I create the grid view
+fragment giving it the list of images that it should display. And in this case that's the flower images. Finally I create and configure a new tab
+indicator and attach it to the ActionBar. And I'll do essentially the same
+thing with the other tab. Now, when I added the tab, notice that I also created an instance
+of something called the tab listener. And this is an object that will be
+called when the user selects and unselects individual tabs. Let me scroll down to that code. Now, here's the onTabSelected method. When a tab is selected this code adds
+its fragment to the hosting activity. Here's the onTabUnselected method. When a tab is unselected,
+this code removes the current fragment. From the hosting activity. The last thing I want to
+discuss are dialogues. A dialogue is a kind of independent sub
+window that is used by an activity for short communications with users. Some dialogue classes provided by Android,
+include the alert dialogue. A ProgressDialog and
+a Date and TimePicker Dialogs. Let's look at a sample application
+that uses both the AlertDialog and the ProgressDialog. Here's the UIAlertDialog application. When I started up, it displays one button. That the user can press to
+initiate application shut down. Let me hit that button now. When I do that, you see that
+the application pops up a dialog, an alert dialog that shows a message,
+do you really want to exit? And it allows the user to respond. In this case either yes or no. I'll hit no now. Which simply dismisses the alert dialog
+and returns me back to the application. Let's say some time goes by. And now I really do want to exit. So I'll hit the shutdown button again. Which again brings up the alert dialog. This time however, I'll hit the yes
+button on the alert dialog. And at this point the alert
+dialog is dismissed, and a new dialog,
+this time a progress dialog is displayed. Which shows a graphic spinner. To let me know that the shutdown
+process is proceeding. Eventually the shutdown finishes and
+the application terminates itself. Let's see what this looks
+like in the source code. So here's the application in the IDE. I'll open up the alert dialog activity
+file and go to it's on create method. As you can see when the user presses
+the shut down button the showed dialog fragment method is invoked,
+passing in an I.D. for the desired dialog. The showed dialog fragment method. Creates an instance of
+the AlertDialogFragment, and then calls the show method on it. Let's look at that class. AlertDialogFragment is
+a subclass of DialogFragment. And it has an onCreateDialog method. This method will be called in
+response to a show method. Being invoked. And this method creates a new
+alert dialog dot builder instance. The methods of a builder almost
+always return the current object, and this is useful because it
+allows you to create an object, and then just keep tacking on
+method calls one after another. To configure that object. In fact,
+here you can see a call to setMessage. And right after that, a call to setCancelable, then a call
+to setNegativeButton, and so forth. And once you set all
+the things that you want, you end with a call to the create method. Which effectively puts together
+all of the previous calls, and returns the final configured object. Now once this dialog is displayed,
+if the user selects no, then there's a call to shut down,
+continue with the perimeter false. If the user instead selects yes, then there's a call to shut down
+continue with the parameter true. Let's go the shutdown continue method. So if should continue is false,
+then we dismiss the alert dialog and everything goes on as if
+nothing had happened. If shouldContinue is true, however,
+we dismiss the alert dialogue and then call showDialogue passing
+in the progress tag ID. And this call creates a progress
+dialogue fragment object. And then calls the show method on it. Eventually we end up at the on create
+dialogue method in the progress dialogue fragment class and here we make a
+new progress dialogue, set it's message to activity shutting down, and
+then call set indeterminate true. Which allows the dialog to stay
+visible until it's dismissed.

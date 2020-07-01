@@ -1,0 +1,178 @@
+[MUSIC] Adapter view are generic view groups,
+that are used to display a list of data. Layouts are generic viewgroups
+that are used to organize, and structure other views, and viewgroups. For example, consider the LinearLayout,
+this viewgroup holds a set of child views, or viewgroups, but
+it arranges the children in a single row, either horizontally, or vertically. Let's look at an example. Here's an application
+called UILinearLayout. And what you see here is a set of
+colored boxes labelled red, green, blue, and yellow, and
+they're all laid out in a horizontal row. Under that there's another set of
+boxes laid out vertically, and they're labeled row one, row two,
+row three, and row four. So, let's look at the source code to see
+how that layout was actually created. Here's the UI Layout application, and I'm going to go straight to the main dot
+xml file where it's layout is stored. In this file you see that the entire
+file is a LinearLayout, and that LinearLayout has 2 children,
+each of which is also a LinearLayout. Now the outer most LinearLayout
+has a layout width, and a layout height of match parent. And this means that it takes up
+all of the space of its parent, in this case the entire
+application window. You can also see that it's orientation
+is vertical, and this means that the children will be lay out,
+will be laid out one on top of the other. Now, if we look at the first
+child LinearLayout, we see that it's lay out width. Is match_parent, so it should be as wide
+as the parent, the outermost LinearLayout, its layout height, however, is set to 0,
+it also has a layout widht of 1. We'll see how these bits of
+information are used in a minute. The last thing to notice is that
+the orientation is horizontal. So the children of this LinearLayout will be laid out next to each
+other horizontally. Now, let's go to the second child
+of that outermost LiinearLayout. And it again is also a LinearLayout. And this element has a layout
+width of match parent. And a layout height of 0. It's layout width however is 3. Whereas that first child had
+a layout weight of 1, and these weights tell Andrew that the first
+child LinearLayout should get one fourth of the space while the second
+child gets the remaining 3 fourths. The second child also has an orientation
+of vertical rather than horizontal. The next layout is a relative layout. With a relative layout a child views
+positioned relative to each other and to their parents rather than in a fixed
+order as we saw with a LinearLayout. Here's the UIRelativeLayout application. This application contains an edit
+text view, and two buttons. Lets look at how we get
+that particular layout. And here's the UIRelativeLayout
+application. Now let's open up
+the main.xml layout file. As you can see we've got a relative
+layout, as the outer most view group. Inside it there are the elements that we
+saw on the screen, an edit text view, and two buttons, and
+they're labeled ok, and cancel. Now if we look more closely,
+we can see that the Ok button should be aligned to the right of
+the parent, that's the relative layout. And below the edit text which
+is designated by its ID entry. Now the cancel button says, that it should
+be aligned to the left of the Ok button. And that its top should be aligned
+with the top of the Ok button. So, putting all those
+constraints together then, Android is able to come up with the layout
+that you saw when we ran the application. The next layout is a TableLayout. With a TableLayout, child views
+are arranged into rows, and columns. Here I'll start out
+the UITableLayout application. This application mimics
+an old text-based menu. What you see is laid out
+one command per row, and within each row different pieces of
+information are laid out in columns. In the IDE we can open up the layout file, and here we can see that
+the layout is a table layout, and that within the tablelayout,
+there are a number of table rows. Within each table row,
+there's a list of views, and these views are assumed to be
+in numerical column order. But if necessary you could
+specify a layout column. For instance,
+this row has nothing in column zero. So we have to tell Android that
+the first row is text view you should go in column 1 not in column zero,
+and you can also see that this text
+view specifies a gravity of right, which means that the views text should
+be pushed to the right of the text view. The next layout if the GridView,
+GridViews arrange their children in a two-dimensional,
+scrollable grid. So I'll start up
+the UIGridView application. This application reads
+in a bunch of images. And then automatically lace
+them out in a rectangular grid. And when I click on any
+one of these images, another activity is started that
+displays that single image. Let's look at the source code panel. So here, I've got the UIGridView
+application open in the IDE. I'll open it's main.xml layout file. And in that file, you'll see
+that there's a GridView element. In that element,
+I've specified some things such as the width of the columns, and the amount
+of spacing to leave around each image. I also specify that the GridView is free
+to determine the number of columns to use. Now going to the source code,
+I'll open up the GridLayout activity file. In there you can see that I've
+specified a list of image resources, that should be displayed by the GridView. Down in on create,
+I set the content view, and then set the adapter, which is
+an instance of the image adapter class. Let's look at the image adapter class. First image adapter is a sub
+class of base adapter, which ultimately implements
+the adapter interface. This class has several methods that get
+used when the grid view is asking for data, and for data views. Lets go through a few of
+this classes methods. First there's the GetCount method. This method should return the number
+of data items managed by the adapter. Another method is GetItemID,
+and this returns an ID for the data item at a specified position. And this gets used, for instance, when the
+user clicks on an image in the GridView, to indicate which image to load when
+the larger individual view pops up. The last method I'll
+talk about is GetView. This method gets called when
+GridView asks the adaptor for one view that will go into the grid. One of the parameters for this method
+is a view called ConvertView, and this parameter will sometimes be no. If so,
+then you need to create a new view, and configure it however you want, but
+over times convert view will not be known. It will actually reference the view that was already returned
+by this method in the past. For example,
+if you have a lot of views in the grid, then only some of them might
+be visible at any one time. So GridView will only ask for
+the views that it's going to display. But if the user later scrolls
+the GridView, some of the views that were visible, are going to become invisible
+because they scroll off the screen. So Android will try to reuse those views,
+and it will pass one of those new views off to
+the adapter to get to the GetView method. And then you'll just use that view, and reset whatever fields that you need for
+your current data item. And this is good because it saves
+the time needed to allocate new views, which in turn can make
+the scrolling look much more fluid. The next thing I'll talk about are menus,
+and the action bar. Activities can support menus, menus can be presented to
+the user in different ways, but the basic idea is that menus give users
+a quick way to access important functions. So, activities can add items to a menu,
+and they can respond when the user invokes
+the menu item, say by clicking on it. Now, the appearance of menus has
+changed in Android over time. So I'll talk about the basic menus first,
+and then later I'll talk specifically
+about the newer action bar class. Now there are three
+kinds of Android menus. First, there are options menus. Which is shown when the user
+presses a menu button. Older Android devices usually had
+a dedicated physical menu key, newer ones don't. Second, there are context menus, and these
+menus are attached to specific views, and is shown only when the user presses,
+and holds that view. Context menus are usually used for operating on the specific data held
+in the view, while option menus, and submenus tend to be for global operations,
+and affect the whole application. And third their submenus, and
+these are secondary menus that are only activated when the user
+touches an already visible menu item. Let's look at some examples of these. So here's the phone application. We're going to show you
+an example of an options menu. For this application. First, I'll scroll over
+to the Contacts tab. And you can see that there's
+an icon here at the bottom. And when I click on it, a menu pops up,
+allowing me to do things like specify which contacts to display,
+or import or export contacts. Next let's see an example
+of a context menu. I'll open the browser application. And use an option's menu to get
+to the bookmarks functionality. And that brings up a tab showing
+bookmarks, history, and saved pages. I'll select history, which shows me a list
+of webpages that I've visited recently. And now I'll press, and hold on one
+of these webpage history entries, and as you can see, that brings up a new menu. Supporting actions that can be
+applied this one web page link. Things like opening it,
+book marking it, or sharing it. And last let me show you an,
+let me show an example of a sub menu. Here I'll open the gallery
+application which shows me some photo albums stored on my device. I'll click on one, and now I see
+a photo from the album, I'll click on the menu item, icon which presents
+a set of actions that I can perform. I'll select the delete menu option,
+now this brings up a secondary menu which actually gets
+shown as a kind of dialog in this case, asking me to confirm the deletion. Now in order to create the menus, you
+first define the contents of the menu in an XML file in the Res/Menu directory. When the user later opens the menu. Android calls a particular method,
+such as onCreateOptionsMenu for options menus and their sub menus, or
+onCreateContextMenu for context menus. In these methods you'll
+use a menu inflater, to create the actual menu layout. When the user later selects one of
+the menu items, Android will call a method such as onOptionsMenuItemSelected for
+options menus, and submenus, or onContextMenuItemSelected for
+context menus. Let's look at a simple example with
+all these different kinds of menus. This application is called
+HelloAndroid WithMenus. I'll start it up, and as you can see there's a text view
+with the words Hello Android. And if I press, and hold this text
+field a context menu will pop up. And this one simply tells me to
+hit the menu button instead. So let's try that. Now, if you look up in
+the top right corner, you can see the icon that
+gets you to the Menu items. And I'm calling that icon a Menu button,
+but actually it's an overflow area. For actions that appear on the action bar,
+which is in the area, which is the area at
+the top of the application. So let me click on that icon, and
+this brings up a menu with three entries, help, more help, and still more help. And if I click on these
+some actions will be taken. Now for the first two menu entries,
+I just display some text on the screen. The last one however is
+associated with the submenu, which in this case just has one entry
+telling me, there's no more help. Let's look at how this is
+implemented in the source code. Now here we are in the IDE, and I'll open up the hello android
+with menu activity file. And first we'll look at the on
+create options menu method. In this method we get the menu inflator,
+and then call its inflate method passing
+in the reference to the menu layout. And passing in the menu in which
+we want to put the new layout. Now I'll open the menu file, Top_menu.xml. And this file contains a menu tag, and
+inside it there are several item tags. In each tag, there are attributes,
+such as an ID, and icon to display for this item,
+and a title for this item. The third menu item also
+includes a submenu, which is specified by the nested menu tag. Back in the activity,
+in the last line of onCreateOptionsMenu,. Return the value true, indicating that
+we want to display this menu item now. Now when the user selects
+one of these menu items, Android will call on options items
+selected, passing in the selected item. Here we check the items ID, and then take
+the appropriate action for that item. And lets look at how
+the context menu is set up. First when the user invokes
+the context menu for the first time. Android calls on create context menu. The code is very similar to what
+we saw with the options menu. You get the menuinflater, and
+you use it to inflate an XML layout file. Let's open it up. Now this menu just has a single item. With the ID help_guide.
